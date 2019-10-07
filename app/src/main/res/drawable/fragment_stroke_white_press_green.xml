@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_hovered="false" android:drawable="@drawable/style_fragment_goal_white">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="#FFFFFF"/>
+            <stroke android:width="1dip" android:color="#B1BCBE" />
+            <corners android:radius="10dip"/>
+            <padding android:left="10dip" android:top="10dip" android:right="10dip" android:bottom="10dip" />
+        </shape>
+    </item>
+    <item android:state_hovered="true" android:drawable="@drawable/style_fragment_goal_press_green" >
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="#FFFFFF"/>
+            <stroke android:width="1dip" android:color="#B1BCBE" />
+            <corners android:radius="10dip"/>
+            <padding android:left="10dip" android:top="10dip" android:right="10dip" android:bottom="10dip" />
+        </shape>
+    </item>
+
+</selector>

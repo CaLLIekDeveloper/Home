@@ -20,6 +20,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     User user;
+    static public DatabaseHelper dbHelper;
     private AppBarConfiguration mAppBarConfiguration;
 
     @Override
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Initiate();
+        Initiate();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -47,13 +48,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void Initiate()
     {
+        /*
         user = new User();
         TextView textView = findViewById(R.id.navBarLogin);
         textView.setText(user.login);
 
         TextView textView1 = findViewById(R.id.navBarEmail);
         textView1.setText(user.email);
+        */
 
+        MainActivity.dbHelper = new DatabaseHelper(this);
+        MainActivity.dbHelper.create_db();
     }
 
     @Override

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/fl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,13 +21,25 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="276dp"
             android:layout_marginBottom="10dp"
-            android:text="Цель 1"
+            android:text="Тренировка Спины"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="15sp"
+            android:layout_weight="1"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="9dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_stroke_red_press_white"
+            android:gravity="center"
+            android:text="Отменить"
+            android:textSize="13sp"
+            android:visibility="invisible" />
+    </LinearLayout>
 </FrameLayout>
