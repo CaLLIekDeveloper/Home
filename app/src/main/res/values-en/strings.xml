@@ -17,4 +17,13 @@
     <string name="gym_text_training">Training:</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
+    <string name="question_delete">todo</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="new_training">New training:</string>
+    <string name="old_name">Past name:</string>
+    <string name="new_name">New name:</string>
+    <string name="change">Change</string>
+    <string name="cancel">Cancel</string>
+    <string name="fill_new_name">Fill new name</string>
 </resources>

@@ -17,4 +17,13 @@
     <string name="gym_text_training">Тренировка:</string>
     <string name="delete">Удалить</string>
     <string name="edit">Редактировать</string>
+    <string name="question_delete">Вы действительно хотите удалить запись?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="new_training">Новая тренировка:</string>
+    <string name="old_name">Прошлое имя:</string>
+    <string name="new_name">Новое имя:</string>
+    <string name="change">Изменить</string>
+    <string name="cancel">Отмена</string>
+    <string name="fill_new_name">Заполните новое имя</string>
 </resources>

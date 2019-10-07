@@ -221,10 +221,6 @@ public class GymFragment extends Fragment {
         MainActivity.dbHelper.close();
     }
 
-
-    public static final int IDM_A = 101;
-    public static final int IDM_B = 102;
-
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
@@ -239,13 +235,99 @@ public class GymFragment extends Fragment {
             case R.id.edit:
                 Log.e("Edit",""+position);
 
+                LayoutInflater li = LayoutInflater.from(getContext());
+                View dialogView = li.inflate(R.layout.dialog_edit_gym_goal, null);
+
+                //Создаем AlertDialog
+                AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(getContext());
+
+                //Настраиваем prompt.xml для нашего AlertDialog:
+                mDialogBuilder.setView(dialogView);
+
+                //Создаем AlertDialog:
+                final AlertDialog alertDialog = mDialogBuilder.create();
+                //делаем невидимый слой для стандартного AlertDialog
+                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                final EditText userInput = dialogView.findViewById(R.id.etGoalNew);
+
+                MainActivity.dbHelper.open();
+                Cursor cursor = MainActivity.dbHelper.database.rawQuery("SELECT * FROM " + TableGymGoals.TABLE_NAME +" WHERE id = "+position,null);
+                cursor.moveToFirst();
+
+                ((EditText)dialogView.findViewById(R.id.etGoalOld)).setText(cursor.getString(cursor.getColumnIndex(TableGymGoals.COLUMN_TEXT_GOAL)));
+                cursor.close();
+                MainActivity.dbHelper.close();
+                Button btnYes = dialogView.findViewById(R.id.btn_gym_edit_ok);
+                btnYes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(userInput.length()>0) {
+                            MainActivity.dbHelper.open();
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put(TableGymGoals.COLUMN_TEXT_GOAL,userInput.getText().toString());
+                            MainActivity.dbHelper.database.update(TableGymGoals.TABLE_NAME,contentValues, TableGymGoals.COLUMN_ID + "= ?", new String[]{"" + position});
+                            MainActivity.dbHelper.close();
+                            addFragments();
+                            alertDialog.dismiss();
+                        }
+                        Toast.makeText(getContext(),R.string.fill_new_name,Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+                ((Button) dialogView.findViewById(R.id.btn_gym_edit_cancel)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                //и отображаем его:
+                alertDialog.show();
                 return true;
+
+
+
+
             case R.id.delete:
                 Log.e("Delete",""+position);
-                MainActivity.dbHelper.open();
-                MainActivity.dbHelper.database.delete(TableGymGoals.TABLE_NAME, TableGymGoals.COLUMN_ID + "= ?", new String[]{"" + position});
-                MainActivity.dbHelper.close();
-                addFragments();
+            ///Кусок кода с alerdDialog
+                View dialogView1 =  LayoutInflater.from(getContext()).inflate(R.layout.dialog_delete_gym_goal, null);
+
+                //Создаем AlertDialog
+                AlertDialog.Builder mDialogBuilder1 = new AlertDialog.Builder(getContext());
+
+                //Настраиваем prompt.xml для нашего AlertDialog:
+                mDialogBuilder1.setView(dialogView1);
+
+                //Создаем AlertDialog:
+                final AlertDialog alertDialog1 = mDialogBuilder1.create();
+                //делаем невидимый слой для стандартного AlertDialog
+                alertDialog1.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                Button btnYes1 = dialogView1.findViewById(R.id.btn_gym_delete_yes);
+                btnYes1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                            MainActivity.dbHelper.open();
+                            MainActivity.dbHelper.database.delete(TableGymGoals.TABLE_NAME, TableGymGoals.COLUMN_ID + "= ?", new String[]{"" + position});
+                            MainActivity.dbHelper.close();
+                            addFragments();
+                            alertDialog1.dismiss();
+
+                    }
+                });
+
+                ((Button) dialogView1.findViewById(R.id.btn_gym_delete_no)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alertDialog1.dismiss();
+                    }
+                });
+
+                //и отображаем его:
+                alertDialog1.show();
+             ///Конец кода с alerdDialog
                 return true;
             default:
                 return super.onContextItemSelected(item);

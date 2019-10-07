@@ -9,7 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/layout_border">
 
         <LinearLayout
             android:id="@+id/line1"
@@ -25,17 +26,8 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:text="@string/gym_text_training" />
-
-            <EditText
-                android:id="@+id/etGoal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:ems="10"
-                android:hint="@string/gym_text_training"
-                android:inputType="textPersonName" />
+                android:text="@string/question_delete" />
 
         </LinearLayout>
 
@@ -43,17 +35,27 @@
             android:id="@+id/line2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:gravity="end"
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_add_gym_goal"
+                android:id="@+id/btn_gym_delete_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/btn_stroke_red_press_white"
+                android:text="@string/no"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btn_gym_delete_yes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/style_btn_green"
-                android:text="@string/add_gym_goal" />
+                android:text="@string/yes"
+                android:textSize="16sp" />
         </LinearLayout>
 
     </LinearLayout>
