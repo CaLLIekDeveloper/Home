@@ -15,4 +15,10 @@ public class SqlGymGoals {
     {
         return "SELECT * FROM GymGoals;";
     }
+
+    public static final String selectNotCheckedGoals()
+    {
+        return "SELECT * FROM GymGoals \n" +
+                "WHERE "+TableGymGoals.COLUMN_STATUS_GOALS+" = 0;";
+    }
 }

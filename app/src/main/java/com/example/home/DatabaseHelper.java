@@ -63,21 +63,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super.close();
     }
 
-    public Cursor query(String query)
-    {
-        open();
-        Cursor userCursor = database.rawQuery(query, null);
-        close();
-        return userCursor;
-    }
-
-    public void queryExec(String query)
-    {
-        open();
-        database.execSQL(query);
-        close();
-    }
-
     @Override
     public void onCreate(SQLiteDatabase db) {
     }

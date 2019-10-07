@@ -15,4 +15,6 @@
     <string name="menu_send">Send</string>
     <string name="add_gym_goal">Добавить</string>
     <string name="gym_text_training">Тренировка:</string>
+    <string name="delete">Удалить</string>
+    <string name="edit">Редактировать</string>
 </resources>

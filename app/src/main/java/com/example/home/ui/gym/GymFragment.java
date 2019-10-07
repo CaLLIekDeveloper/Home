@@ -6,19 +6,27 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -94,9 +102,19 @@ public class GymFragment extends Fragment {
                 alertDialog.show();
             }
         });
-
+        registerForContextMenu(btnAdd);
         return root;
     }
+    private int position;
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
 
     private void addFragments()
     {
@@ -104,58 +122,133 @@ public class GymFragment extends Fragment {
         MainActivity.dbHelper.open();
         Cursor cursorGoals = MainActivity.dbHelper.database.rawQuery(SqlGymGoals.selectGoals(),null);
 
-        if(cursorGoals.getCount()>0)cursorGoals.moveToFirst();
-        for(int i=0; i<cursorGoals.getCount(); i++)
-        {
-            String textGoal = cursorGoals.getString(cursorGoals
-                    .getColumnIndex(TableGymGoals.COLUMN_TEXT_GOAL));
+        //Если курсор не нул
+        if(cursorGoals.moveToFirst()) {
+            Cursor cursorNotCheckedGoals = MainActivity.dbHelper.database.rawQuery(SqlGymGoals.selectNotCheckedGoals(), null);
+            if (cursorNotCheckedGoals.moveToFirst()) {
+                for (int i = 0; i < cursorNotCheckedGoals.getCount(); i++) {
+                    ////Изменить нижние строки если нужно будет)
+                    String textGoal = cursorNotCheckedGoals.getString(cursorNotCheckedGoals
+                            .getColumnIndex(TableGymGoals.COLUMN_TEXT_GOAL));
+                    int id = cursorNotCheckedGoals.getInt(cursorNotCheckedGoals.getColumnIndex(TableGymGoals.COLUMN_ID));
+                    final View view = getLayoutInflater().inflate(R.layout.fragment_goal, null);
+                    view.setId(id);
+                    ////
 
-            final  View view = getLayoutInflater().inflate(R.layout.fragment_goal, null);
-
-            final CheckBox enableBox = view.findViewById(R.id.checkBox);
-            enableBox.setText("Тренировка "+textGoal);
-
-            enableBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    final Handler handler = new Handler();
-                    final Runnable runnable = new Runnable() {
+                    view.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
-                        public void run() {
-                            mainLayout.removeView(view);
+                        public boolean onLongClick(View v) {
+                            setPosition(view.getId());
+                            return false;
                         }
-                    };
-                    //Если флажок установлен
-                    if (isChecked) {
-                        //делаем флажок невидимым
-                        enableBox.setVisibility(View.INVISIBLE);
-                        //находим кнопку с нужным айди
-                        final Button btnCancel = view.findViewById(R.id.btn_cancel);
-                        //делаем её видимлй
-                        btnCancel.setVisibility(View.VISIBLE);
-                        //запускаем таймер по окончанию которого удаляем вьюшку
-                        handler.postDelayed(runnable, 1000);
+                    });
 
-                        btnCancel.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                handler.removeCallbacks(runnable);
-                                enableBox.setChecked(false);
-                                btnCancel.setVisibility(View.INVISIBLE);
-                                enableBox.setVisibility(View.VISIBLE);
+                    registerForContextMenu(view);
+
+                    final CheckBox enableBox = view.findViewById(R.id.checkBox);
+                    enableBox.setText("Тренировка " + textGoal);
+
+                    enableBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            final Handler handler = new Handler();
+                            final Runnable runnable = new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    MainActivity.dbHelper.open();
+                                    Log.e("id", "" + view.getId());
+                                    ContentValues contentValues = new ContentValues();
+                                    contentValues.put(TableGymGoals.COLUMN_STATUS_GOALS, 1);
+
+                                    MainActivity.dbHelper.database.update(TableGymGoals.TABLE_NAME, contentValues, TableGymGoals.COLUMN_ID + "= ?", new String[]{"" + view.getId()});
+                                    MainActivity.dbHelper.close();
+
+                                    mainLayout.removeView(view);
+                                    if(mainLayout.getChildCount()==0)addFragments();
+                                }
+                            };
+                            //Если флажок установлен
+                            if (isChecked) {
+                                //делаем флажок невидимым
+                                enableBox.setVisibility(View.INVISIBLE);
+                                //находим кнопку с нужным айди
+                                final Button btnCancel = view.findViewById(R.id.btn_cancel);
+                                //делаем её видимлй
+                                btnCancel.setVisibility(View.VISIBLE);
+                                //запускаем таймер по окончанию которого удаляем вьюшку
+                                handler.postDelayed(runnable, 1000);
+
+                                btnCancel.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        handler.removeCallbacks(runnable);
+                                        enableBox.setChecked(false);
+                                        btnCancel.setVisibility(View.INVISIBLE);
+                                        enableBox.setVisibility(View.VISIBLE);
+                                    }
+                                });
+                            } else {
+                                //not happened
                             }
-                        });
-                    } else {
-                        //not happened
-                    }
-                }
-            });
+                        }
+                    });
 
-            mainLayout.addView(view);
-            cursorGoals.moveToNext();
+                    mainLayout.addView(view);
+                    cursorNotCheckedGoals.moveToNext();
+                }
+                cursorNotCheckedGoals.close();
+            }
+            else
+            {
+                for(int i=0; i<cursorGoals.getCount(); i++)
+                {
+                    int id = cursorGoals.getInt(cursorGoals.getColumnIndex(TableGymGoals.COLUMN_ID));
+
+                    MainActivity.dbHelper.open();
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(TableGymGoals.COLUMN_STATUS_GOALS, 0);
+                    MainActivity.dbHelper.database.update(TableGymGoals.TABLE_NAME, contentValues, TableGymGoals.COLUMN_ID + "= ?", new String[]{"" + id});
+                    MainActivity.dbHelper.close();
+                    cursorGoals.moveToNext();
+                }
+                cursorGoals.close();
+                MainActivity.dbHelper.close();
+                addFragments();
+            }
         }
 
         cursorGoals.close();
         MainActivity.dbHelper.close();
+    }
 
+
+    public static final int IDM_A = 101;
+    public static final int IDM_B = 102;
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = MainActivity.menuInflater;
+        inflater.inflate(R.menu.context_menu_gym_goals, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.edit:
+                Log.e("Edit",""+position);
+
+                return true;
+            case R.id.delete:
+                Log.e("Delete",""+position);
+                MainActivity.dbHelper.open();
+                MainActivity.dbHelper.database.delete(TableGymGoals.TABLE_NAME, TableGymGoals.COLUMN_ID + "= ?", new String[]{"" + position});
+                MainActivity.dbHelper.close();
+                addFragments();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 }

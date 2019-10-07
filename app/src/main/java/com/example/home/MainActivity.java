@@ -12,12 +12,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 
 public class MainActivity extends AppCompatActivity {
 
     User user;
     static public DatabaseHelper dbHelper;
     static public FragmentManager fragmentManager;
+
+    static  public MenuInflater menuInflater;
     private AppBarConfiguration mAppBarConfiguration;
 
     @Override
@@ -43,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         fragmentManager = getFragmentManager();
+
+        menuInflater = getMenuInflater();
     }
 
     private void Initiate()
