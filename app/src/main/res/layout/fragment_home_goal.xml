@@ -42,7 +42,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/gas"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -50,10 +50,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="5dp"
-            >
+            android:layout_marginBottom="5dp">
 
             <TextView
                 android:id="@+id/textView11"
@@ -78,10 +76,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="5dp"
-            >
+            android:layout_marginBottom="5dp">
 
             <TextView
                 android:id="@+id/textView12"
@@ -121,7 +117,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/electricity"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -129,10 +125,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="5dp"
-            >
+            android:layout_marginBottom="5dp">
 
             <TextView
                 android:id="@+id/textView21"
@@ -157,10 +151,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="5dp"
-            >
+            android:layout_marginBottom="5dp">
 
             <TextView
                 android:id="@+id/textView22"
@@ -200,7 +192,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/water"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -208,10 +200,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="5dp"
-            >
+            android:layout_marginBottom="5dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -235,10 +225,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="5dp"
-            >
+            android:layout_marginBottom="5dp">
 
             <TextView
                 android:layout_width="wrap_content"
