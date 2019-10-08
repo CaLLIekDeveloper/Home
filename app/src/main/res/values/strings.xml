@@ -26,4 +26,11 @@
     <string name="change">Изменить</string>
     <string name="cancel">Отмена</string>
     <string name="fill_new_name">Заполните новое имя</string>
+    <string name="water">Вода</string>
+    <string name="electricity">Електричество</string>
+    <string name="gas">Газ</string>
+    <string name="counters">Показания счетчиков</string>
+    <string name="oldCounter">Старые показания:</string>
+    <string name="newCounter">Новые показания</string>
+    <string name="indication">Показания</string>
 </resources>
