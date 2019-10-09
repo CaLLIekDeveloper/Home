@@ -33,4 +33,6 @@
     <string name="oldCounter">todo</string>
     <string name="newCounter">newCounter</string>
     <string name="indication">Indication</string>
+    <string name="show">Show</string>
+    <string name="null_done_goals">todo</string>
 </resources>

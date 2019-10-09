@@ -33,4 +33,6 @@
     <string name="oldCounter">Старые показания:</string>
     <string name="newCounter">Новые показания</string>
     <string name="indication">Показания</string>
+    <string name="show">Показать</string>
+    <string name="null_done_goals">Данных о завершенных тренировках нет в БД</string>
 </resources>

@@ -49,6 +49,14 @@
                 android:layout_weight="0"
                 android:background="@drawable/style_btn_green"
                 android:text="Добавить" />
+
+            <Button
+                android:id="@+id/btn_show"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="@string/show"
+                android:background="@drawable/style_btn_green"/>
         </LinearLayout>
 
         <LinearLayout

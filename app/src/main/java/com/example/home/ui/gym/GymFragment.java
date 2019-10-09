@@ -32,13 +32,19 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.home.MainActivity;
 import com.example.home.R;
 import com.example.home.SqlGymGoals;
+import com.example.home.TableDoneGymGoals;
 import com.example.home.TableGymGoals;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class GymFragment extends Fragment {
 
     private LinearLayout mainLayout;
     private GymViewModel gymViewModel;
 
+    boolean isPressed = false;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -48,7 +54,7 @@ public class GymFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_gym, container, false);
         final TextView textView = root.findViewById(R.id.title_gym);
         mainLayout = root.findViewById(R.id.containerGoals);
-        addFragments();
+        addFragmentsGoals();
         gymViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -92,12 +98,29 @@ public class GymFragment extends Fragment {
                             MainActivity.dbHelper.database.insert(TableGymGoals.TABLE_NAME,null, contentValues);
                             MainActivity.dbHelper.close();
                             alertDialog.dismiss();
-                            addFragments();
+                            addFragmentsGoals();
                         }
                     }
                 });
                 //и отображаем его:
                 alertDialog.show();
+            }
+        });
+
+        final Button btnShowDoneGoals = root.findViewById(R.id.btn_show);
+        btnShowDoneGoals.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isPressed){
+                    addFragmentsDoneGoals();
+                    btnShowDoneGoals.setText("Показать цели");
+                    isPressed = !isPressed;
+                }else
+                {
+                    addFragmentsGoals();
+                    btnShowDoneGoals.setText("Показать пройденные цели");
+                    isPressed = !isPressed;
+                }
             }
         });
         registerForContextMenu(btnAdd);
@@ -113,8 +136,42 @@ public class GymFragment extends Fragment {
         this.position = position;
     }
 
+    private void addFragmentsDoneGoals()
+    {
+        mainLayout.removeAllViews();
+        MainActivity.dbHelper.open();
+        Cursor cursorDoneGoals = MainActivity.dbHelper.database.rawQuery(SqlGymGoals.selectDoneGoals(),null);
+        if(cursorDoneGoals.moveToFirst()) {
+                for(int i=0; i<cursorDoneGoals.getCount(); i++)
+                {
+                    String textDoneGoal = cursorDoneGoals.getString(cursorDoneGoals
+                            .getColumnIndex(TableDoneGymGoals.COLUMN_TEXT_GOAL));
 
-    private void addFragments()
+                    String dateDoneGoal = cursorDoneGoals.getString(cursorDoneGoals
+                            .getColumnIndex(TableDoneGymGoals.COLUMN_DATE_DONE_GOAL));
+
+                    final View view = getLayoutInflater().inflate(R.layout.fragment_done_goal, null);
+
+                    TextView tvText = view.findViewById(R.id.tv_done_goal_text);
+                    tvText.setText(textDoneGoal);
+
+                    TextView tvDate = view.findViewById(R.id.tv_done_goal_date);
+                    tvDate.setText(dateDoneGoal);
+
+                    mainLayout.addView(view);
+                    cursorDoneGoals.moveToNext();
+
+                }
+        } else
+        {
+            View view = getLayoutInflater().inflate(R.layout.fragment_done_goals_null, null);
+            mainLayout.addView(view);
+        }
+        cursorDoneGoals.close();
+        MainActivity.dbHelper.close();
+    }
+
+    private void addFragmentsGoals()
     {
         mainLayout.removeAllViews();
         MainActivity.dbHelper.open();
@@ -159,10 +216,21 @@ public class GymFragment extends Fragment {
                                     contentValues.put(TableGymGoals.COLUMN_STATUS_GOALS, 1);
 
                                     MainActivity.dbHelper.database.update(TableGymGoals.TABLE_NAME, contentValues, TableGymGoals.COLUMN_ID + "= ?", new String[]{"" + view.getId()});
+
+
+                                    ContentValues doneGoal = new ContentValues();
+                                    doneGoal.put(TableDoneGymGoals.COLUMN_TEXT_GOAL,enableBox.getText().toString());
+
+                                    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+
+                                    Date c = Calendar.getInstance().getTime();
+                                    doneGoal.put(TableDoneGymGoals.COLUMN_DATE_DONE_GOAL,df.format(c));
+
+                                    MainActivity.dbHelper.database.insert(TableDoneGymGoals.TABLE_NAME,null,doneGoal);
                                     MainActivity.dbHelper.close();
 
                                     mainLayout.removeView(view);
-                                    if(mainLayout.getChildCount()==0)addFragments();
+                                    if(mainLayout.getChildCount()==0) addFragmentsGoals();
                                 }
                             };
                             //Если флажок установлен
@@ -211,7 +279,7 @@ public class GymFragment extends Fragment {
                 }
                 cursorGoals.close();
                 MainActivity.dbHelper.close();
-                addFragments();
+                addFragmentsGoals();
             }
         }
 
@@ -266,7 +334,7 @@ public class GymFragment extends Fragment {
                             contentValues.put(TableGymGoals.COLUMN_TEXT_GOAL,userInput.getText().toString());
                             MainActivity.dbHelper.database.update(TableGymGoals.TABLE_NAME,contentValues, TableGymGoals.COLUMN_ID + "= ?", new String[]{"" + position});
                             MainActivity.dbHelper.close();
-                            addFragments();
+                            addFragmentsGoals();
                             alertDialog.dismiss();
                         }
                         Toast.makeText(getContext(),R.string.fill_new_name,Toast.LENGTH_SHORT).show();
@@ -310,7 +378,7 @@ public class GymFragment extends Fragment {
                             MainActivity.dbHelper.open();
                             MainActivity.dbHelper.database.delete(TableGymGoals.TABLE_NAME, TableGymGoals.COLUMN_ID + "= ?", new String[]{"" + position});
                             MainActivity.dbHelper.close();
-                            addFragments();
+                            addFragmentsGoals();
                             alertDialog1.dismiss();
 
                     }

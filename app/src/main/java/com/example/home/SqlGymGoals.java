@@ -16,6 +16,11 @@ public class SqlGymGoals {
         return "SELECT * FROM GymGoals;";
     }
 
+    public static final String selectDoneGoals()
+    {
+        return "SELECT * FROM "+TableDoneGymGoals.TABLE_NAME+";";
+    }
+
     public static final String selectNotCheckedGoals()
     {
         return "SELECT * FROM GymGoals \n" +
