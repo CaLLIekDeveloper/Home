@@ -14,6 +14,8 @@ public class User {
     String password;
     public User()
     {
+        login = "CaLLIek";
+
         email = "zusa11@rambler.ru";
         password = "Navi2010";
 

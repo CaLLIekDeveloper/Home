@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,6 +37,16 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+
+
+        user = new User();
+
+        TextView login = navigationView.getHeaderView(0).findViewById(R.id.navBarLogin);
+        login.setText(user.login);
+
+        TextView email = navigationView.getHeaderView(0).findViewById(R.id.navBarEmail);
+        email.setText(user.email);
+
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_gym, R.id.nav_slideshow,
                 R.id.nav_tools)
@@ -52,15 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void Initiate()
     {
-        /*
-        user = new User();
-        TextView textView = findViewById(R.id.navBarLogin);
-        textView.setText(user.login);
-
-        TextView textView1 = findViewById(R.id.navBarEmail);
-        textView1.setText(user.email);
-        */
-
         MainActivity.dbHelper = new DatabaseHelper(this);
         MainActivity.dbHelper.create_db();
     }

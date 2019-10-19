@@ -35,4 +35,5 @@
     <string name="indication">Показания</string>
     <string name="show">Показать</string>
     <string name="null_done_goals">Данных о завершенных тренировках нет в БД</string>
+    <string name="menu_hookah">Кальян</string>
 </resources>
