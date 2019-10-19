@@ -18,7 +18,9 @@
             android:gravity="start"
             android:orientation="horizontal">
 
-            <include layout="@layout/fragment_hookah_smoker" />
+            <include
+                android:id="@+id/hookah_fragment_smoker_1"
+                layout="@layout/fragment_hookah_smoker" />
         </LinearLayout>
 
         <TextView
@@ -37,7 +39,9 @@
             android:gravity="end"
             android:orientation="horizontal">
 
-            <include layout="@layout/fragment_hookah_smoker" />
+            <include
+                android:id="@+id/hookah_fragment_smoker_2"
+                layout="@layout/fragment_hookah_smoker" />
         </LinearLayout>
 
     </LinearLayout>
